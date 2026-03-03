@@ -1,9 +1,11 @@
-const getFizzBuzz = (number) => {
-    let result = '';
-    if (number % 3 === 0) result += 'Fizz';
-    if (number % 5 === 0) result += 'Buzz';
-    return result || number;
-};
+const fizzBuzz = (from = 1, to = 100) => {
+    for (let i = from; i <= to; i++) {
+        let result = '';
+        if (i % 3 === 0) result += 'Fizz';
+        if (i % 5 === 0) result += 'Buzz';
+        console.log(result || i);
+    }
+}
 
 const getArgsValue = () => {
     let args = [];
@@ -23,6 +25,4 @@ const args = getArgsValue();
 const N = Number(args) || 100;
 
 // Run FizzBuzz from 1 to N
-for (let i = 1; i <= N; i++) {
-    console.log(getFizzBuzz(i));
-}
+fizzBuzz(1, N);
