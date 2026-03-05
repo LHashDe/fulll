@@ -2,7 +2,7 @@
    CSS Custom Properties
    =========================================== */
 :root {
-  --color-primary: #00b8d4;
+  --color-primary: #00A1FF;
   --color-primary-dark: #0097a7;
   --color-danger: #ef5350;
   --color-danger-dark: #d32f2f;
@@ -19,9 +19,9 @@
   --color-checkbox-checked: var(--color-primary);
   
   --header-height: 64px;
-  --card-min-width: 180px;
-  --card-max-width: 220px;
-  --avatar-size: 72px;
+  --card-min-width: 100px;
+  --card-max-width: 100px;
+  --avatar-size: 42px;
   
   --spacing-xs: 0.25rem;
   --spacing-sm: 0.5rem;
@@ -192,28 +192,11 @@
   width: 36px;
   height: 36px;
   padding: 0;
-  border: 1px solid var(--color-border);
-  border-radius: var(--radius-sm);
   background-color: #ffffff;
-  color: var(--color-text-dark);
   cursor: pointer;
   transition: all var(--transition-fast);
 }
 
-.action-btn:hover {
-  border-color: var(--color-primary);
-  color: var(--color-primary);
-}
-
-.action-btn--duplicate:hover {
-  border-color: var(--color-primary);
-  color: var(--color-primary);
-}
-
-.action-btn--delete:hover {
-  border-color: var(--color-danger);
-  color: var(--color-danger);
-}
 
 /* ===========================================
    Edit Toggle
@@ -238,14 +221,12 @@
   color: var(--color-primary);
 }
 
-.edit-toggle--active {
-  background-color: var(--color-primary);
+.edit-toggle-active {
   border-color: var(--color-primary);
   color: #ffffff;
 }
 
-.edit-toggle--active:hover {
-  background-color: var(--color-primary-dark);
+.edit-toggle-active:hover {
   border-color: var(--color-primary-dark);
   color: #ffffff;
 }
@@ -257,6 +238,7 @@
   flex: 1;
   overflow-y: auto;
   min-height: 0;
+  border: 1px solid var(--color-border);
 }
 
 /* ===========================================
@@ -362,11 +344,11 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding: var(--spacing-lg);
-  padding-top: calc(var(--spacing-lg) + 8px);
+  padding: var(--spacing-sm);
   background-color: var(--color-bg-card);
   border-radius: var(--radius-lg);
   box-shadow: var(--shadow-card);
+  width: var(--card-max-width);
   transition: box-shadow var(--transition-normal), transform var(--transition-normal);
 }
 
@@ -435,16 +417,16 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  padding: var(--spacing-sm) var(--spacing-lg);
-  font-size: 0.875rem;
+  padding: var(--spacing-xs) var(--spacing-sm);
+  font-size: 0.75rem;
   font-weight: 500;
-  color: #ffffff;
+  color: #000000;
   background-color: var(--color-primary);
   border-radius: var(--radius-sm);
   text-decoration: none;
   transition: background-color var(--transition-fast);
   width: 100%;
-  max-width: 140px;
+  margin-top: auto;
 }
 
 .user-card_link:hover {
@@ -484,20 +466,6 @@
     grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
     gap: var(--spacing-md);
   }
-
-  .user-card {
-    padding: var(--spacing-lg);
-  }
-
-  .user-card_avatar {
-    width: 60px;
-    height: 60px;
-  }
-
-  .user-card_link {
-    padding: var(--spacing-xs) var(--spacing-md);
-    font-size: 0.8rem;
-  }
 }
 
 @media (max-width: 480px) {
@@ -505,26 +473,6 @@
     grid-template-columns: repeat(2, 1fr);
     gap: var(--spacing-md);
     padding: var(--spacing-sm);
-  }
-
-  .user-card {
-    padding: var(--spacing-sm);
-    padding-top: calc(var(--spacing-sm) + 8px);
-  }
-
-  .user-card_avatar {
-    width: 50px;
-    height: 50px;
-  }
-
-  .user-card_login {
-    font-size: 0.85rem;
-  }
-
-  .user-card_link {
-    padding: var(--spacing-xs) var(--spacing-sm);
-    font-size: 0.75rem;
-    max-width: 120px;
   }
 
   .select-all_label {

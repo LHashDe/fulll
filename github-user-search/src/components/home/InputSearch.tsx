@@ -1,7 +1,8 @@
+import { memo } from "react";
 import { useGithubUsersContext } from "./GithubUsersContextProvider";
 
-function InputSearch() {
-  const { handleSearchChange, searchValue } = useGithubUsersContext();
+const InputSearch = memo(function InputSearch() {
+  const { searchValue, handleSearchChange } = useGithubUsersContext();
 
   return (
     <div className="search-container">
@@ -15,6 +16,6 @@ function InputSearch() {
       />
     </div>
   );
-}
+});
 
 export default InputSearch;

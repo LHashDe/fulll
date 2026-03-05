@@ -1,4 +1,4 @@
-import { memo, useCallback } from "react";
+import { memo } from "react";
 import type { DisplayUser } from "../../hooks/github-users/use-github-users";
 
 type UserCardProps = {
@@ -14,10 +14,6 @@ const UserCard = memo(function UserCard({
   isEditMode,
   onToggleSelection,
 }: UserCardProps) {
-  const handleToggleSelection = useCallback(() => {
-    onToggleSelection(user.internalId);
-  }, [onToggleSelection, user.internalId]);
-
   return (
     <article className={`user-card ${isSelected ? "user-card-selected" : ""}`}>
       {isEditMode && (
@@ -25,7 +21,7 @@ const UserCard = memo(function UserCard({
           <input
             type="checkbox"
             checked={isSelected}
-            onChange={handleToggleSelection}
+            onChange={() => onToggleSelection(user.internalId)}
             className="checkbox"
             aria-label={`Select ${user.login}`}
           />

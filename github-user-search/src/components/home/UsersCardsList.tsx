@@ -1,15 +1,9 @@
-import { useCallback } from "react";
 import { useGithubUsersContext } from "./GithubUsersContextProvider";
 import UserCard from "./UserCard";
 
 export default function UsersCardsList() {
   const { users, isLoading, isEditMode, selectedUserIds, toggleSelection } =
     useGithubUsersContext();
-
-  const handleToggleSelection = useCallback(
-    (internalId: string) => toggleSelection(internalId),
-    [toggleSelection],
-  );
 
   if (isLoading) return null;
 
@@ -31,7 +25,7 @@ export default function UsersCardsList() {
           user={user}
           isSelected={selectedUserIds.has(user.internalId)}
           isEditMode={isEditMode}
-          onToggleSelection={handleToggleSelection}
+          onToggleSelection={toggleSelection}
         />
       ))}
     </div>

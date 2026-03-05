@@ -1,12 +1,19 @@
 import { useRef, useCallback } from 'react';
 
-export function useDebounce(fn: (...args: any[]) => void, delay: number = 300) {
-    const timeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null)
+//prevents the function from being called too often
+export function useDebounce<T extends unknown[]>(
+  fn: (...args: T) => void,
+  delay: number = 300
+) {
+  const timeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
-    return useCallback((...args: unknown[]) => {
-        if (timeoutRef.current) {
-            clearTimeout(timeoutRef.current)
-        }
-        timeoutRef.current = setTimeout(() => fn(...args), delay)
-    }, [fn, delay])
+  return useCallback(
+    (...args: T) => {
+      if (timeoutRef.current) {
+        clearTimeout(timeoutRef.current);
+      }
+      timeoutRef.current = setTimeout(() => fn(...args), delay);
+    },
+    [fn, delay]
+  );
 }
