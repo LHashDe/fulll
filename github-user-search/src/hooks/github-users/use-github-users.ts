@@ -1,6 +1,6 @@
 import { useState, useCallback, useRef, useEffect } from 'react'
-import { searchGithubUser } from '../../../services/github/search-github-user'
-import { type GithubUser } from '../../../services/github/github-user'
+import { searchGithubUser } from '../../services/github/search-github-user'
+import { type GithubUser } from '../../services/github/github-user'
 
 export type DisplayUser = GithubUser & {
     internalId: string
@@ -18,13 +18,21 @@ const initialState: SearchState = {
     error: null,
 }
 
-export function useGithubUsers() {
+type UseGithubUsersOptions = {
+    onSearchStart?: () => void
+}
+
+//custom hook to manage github users: search, duplicate and delete users
+export function useGithubUsers(options?: UseGithubUsersOptions) {
     const [state, setState] = useState<SearchState>(initialState)
-    const [selectedUserIds, setSelectedUserIds] = useState<Set<string>>(new Set())
     const abortControllerRef = useRef<AbortController | null>(null)
     const isMountedRef = useRef(true)
+    const onSearchStartRef = useRef(options?.onSearchStart)
 
-    // Cleanup on unmount
+    useEffect(() => {
+        onSearchStartRef.current = options?.onSearchStart
+    }, [options?.onSearchStart])
+
     useEffect(() => {
         isMountedRef.current = true
         return () => {
@@ -36,9 +44,8 @@ export function useGithubUsers() {
     const search = useCallback(async (query: string) => {
         const trimmedQuery = query.trim()
 
-        // Abort previous request
         abortControllerRef.current?.abort()
-        setSelectedUserIds(new Set())
+        onSearchStartRef.current?.()
         
         if (!trimmedQuery) {
             setState(prev => ({ ...prev, users: [], isLoading: false, error: null }))
@@ -58,7 +65,6 @@ export function useGithubUsers() {
             signal: controller.signal 
         })
 
-        // Don't update state if aborted or unmounted
         if (controller.signal.aborted || !isMountedRef.current) {
             return
         }
@@ -84,14 +90,12 @@ export function useGithubUsers() {
         })
     }, [])
 
-    const duplicateSelected = useCallback(() => {
-        // Read current selection (not via callback)
-        if (selectedUserIds.size === 0) return
+    const duplicateUsers = useCallback((userIds: Set<string>) => {
+        if (userIds.size === 0) return
     
-        // Update users
         setState(prev => {
             const duplicates: DisplayUser[] = prev.users
-                .filter(user => selectedUserIds.has(user.internalId))
+                .filter(user => userIds.has(user.internalId))
                 .map(user => ({
                     ...user,
                     internalId: crypto.randomUUID(),
@@ -101,29 +105,21 @@ export function useGithubUsers() {
                 users: [...prev.users, ...duplicates],
             }
         })
-    
-        // Clear selection separately
-        setSelectedUserIds(new Set())
-    }, [selectedUserIds])
+    }, [])
 
-    const deleteSelected = useCallback(() => {
-        if (selectedUserIds.size === 0) return
+    const deleteUsers = useCallback((userIds: Set<string>) => {
+        if (userIds.size === 0) return
     
         setState(prev => ({
             ...prev,
-            users: prev.users.filter(user => !selectedUserIds.has(user.internalId)),
+            users: prev.users.filter(user => !userIds.has(user.internalId)),
         }))
-    
-        setSelectedUserIds(new Set())
-    }, [selectedUserIds])
+    }, [])
 
     return {
         ...state,
-        selectedUserIds,
-        setSelectedUserIds,
-        selectedCount: selectedUserIds.size,
         search,
-        duplicateSelected,
-        deleteSelected,
+        duplicateUsers,
+        deleteUsers,
     }
 }

@@ -2,7 +2,9 @@ import {
   createContext,
   useCallback,
   useContext,
+  useEffect,
   useMemo,
+  useRef,
   useState,
   type ReactNode,
   type ChangeEvent,
@@ -12,6 +14,7 @@ import {
   type DisplayUser,
 } from "../../hooks/github-users/use-github-users";
 import { useDebounce } from "../../hooks/use-debounce";
+import { useSelection } from "../../hooks/github-users/use-selection";
 
 type GithubUsersContextValue = {
   users: DisplayUser[];
@@ -35,7 +38,7 @@ type GithubUsersContextValue = {
   isPartiallySelected: boolean;
 };
 
-const GithubUsersContext = createContext<GithubUsersContextValue | null>(null)
+const GithubUsersContext = createContext<GithubUsersContextValue | null>(null);
 
 export default function GithubUsersContextProvider({
   children,
@@ -44,51 +47,45 @@ export default function GithubUsersContextProvider({
 }) {
   const [isEditMode, setIsEditMode] = useState(false);
   const [searchValue, setSearchValue] = useState("");
+  
+  const resetSelectionRef = useRef<() => void>(() => {});
 
   const {
     users,
     error,
     isLoading,
-    duplicateSelected,
     search,
-    deleteSelected,
-    selectedUserIds,
-    setSelectedUserIds,
+    duplicateUsers,
+    deleteUsers,
+  } = useGithubUsers({
+    onSearchStart: () => resetSelectionRef.current(),
+  });
+
+  const {
+    selectedIds: selectedUserIds,
     selectedCount,
-  } = useGithubUsers();
+    isAllSelected,
+    isPartiallySelected,
+    toggleSelection,
+    selectAll,
+    deselectAll,
+    toggleSelectAll,
+    reset: resetSelection,
+  } = useSelection(users);
 
-  const toggleSelection = useCallback((internalId: string) => {
-    setSelectedUserIds((prev) => {
-      const next = new Set(prev);
-      if (next.has(internalId)) {
-        next.delete(internalId);
-      } else {
-        next.add(internalId);
-      }
-      return next;
-    });
-  }, [setSelectedUserIds]);
+  useEffect(() => {
+    resetSelectionRef.current = resetSelection;
+  }, [resetSelection]);
 
-  const selectAll = useCallback(() => {
-    setSelectedUserIds(new Set(users.map((u) => u.internalId)));
-  }, [users, setSelectedUserIds]);
+  const duplicateSelected = useCallback(() => {
+    duplicateUsers(selectedUserIds);
+    resetSelection();
+  }, [duplicateUsers, selectedUserIds, resetSelection]);
 
-  const deselectAll = useCallback(() => {
-    setSelectedUserIds(new Set());
-  }, [setSelectedUserIds]);
-
-  const toggleSelectAll = useCallback(() => {
-    if (selectedUserIds.size === users.length) {
-      deselectAll();
-    } else {
-      selectAll();
-    }
-  }, [selectedUserIds.size, users.length, selectAll, deselectAll]);
-
-  const isAllSelected =
-    users.length > 0 && selectedUserIds.size === users.length;
-  const isPartiallySelected =
-    selectedUserIds.size > 0 && selectedUserIds.size < users.length;
+  const deleteSelected = useCallback(() => {
+    deleteUsers(selectedUserIds);
+    resetSelection();
+  }, [deleteUsers, selectedUserIds, resetSelection]);
 
   const handleToggleEditMode = useCallback(() => {
     setIsEditMode((prev) => !prev);
