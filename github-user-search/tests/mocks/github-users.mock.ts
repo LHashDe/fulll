@@ -1,4 +1,4 @@
-import type { GithubUser } from '../../services/github/github-user'
+import type { GithubUser } from '../../src/services/github/github-user'
 import type { DisplayUser } from '../../src/hooks/github-users/use-github-users'
 
 export const mockGithubUser: GithubUser = {

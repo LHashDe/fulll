@@ -1,6 +1,5 @@
 import { memo } from "react";
 import { useGithubUsersContext } from "./GithubUsersContextProvider";
-import { DuplicateIcon, DeleteIcon, EditIcon } from "../icons";
 
 export const Toolbar = memo(function Toolbar() {
   const {
@@ -45,7 +44,7 @@ export const Toolbar = memo(function Toolbar() {
               title="Duplicate selected"
               aria-label="Duplicate selected items"
             >
-              <DuplicateIcon />
+              <img src={"/icons/duplicateIcon.svg"} alt="Duplicate" width={20} height={20} />
             </button>
             <button
               className="action-btn action-btn-delete"
@@ -53,7 +52,7 @@ export const Toolbar = memo(function Toolbar() {
               title="Delete selected"
               aria-label="Delete selected items"
             >
-              <DeleteIcon />
+              <img src={"/icons/deleteIcon.svg"} alt="Delete" width={20} height={20} className="action-btn-delete-icon" />
             </button>
           </div>
         )}
@@ -63,7 +62,7 @@ export const Toolbar = memo(function Toolbar() {
           title={isEditMode ? "Exit edit mode" : "Enter edit mode"}
           aria-pressed={isEditMode}
         >
-          <EditIcon />
+          <img src={"/icons/editIcon.svg"} alt="Edit" width={20} height={20} />
         </button>
       </div>
     </div>

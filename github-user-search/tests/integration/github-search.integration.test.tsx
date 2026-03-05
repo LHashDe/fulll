@@ -2,10 +2,10 @@ import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest'
 import { render, screen, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import App from '../../src/App'
-import * as searchService from '../../services/github/search-github-user'
+import * as searchService from '../../src/services/github/search-github-user'
 import { mockSearchResponse, mockEmptySearchResponse, mockRateLimitError } from '../mocks/github-users.mock'
 
-vi.mock('../../services/github/search-github-user')
+vi.mock('../../src/services/github/search-github-user')
 
 describe('GitHub Search Integration', () => {
   beforeEach(() => {
