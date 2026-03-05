@@ -40,6 +40,7 @@ type GithubUsersContextValue = {
 
 const GithubUsersContext = createContext<GithubUsersContextValue | null>(null);
 
+//context provider for the github users
 export default function GithubUsersContextProvider({
   children,
 }: {

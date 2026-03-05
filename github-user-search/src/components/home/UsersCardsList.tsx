@@ -1,6 +1,7 @@
 import { useGithubUsersContext } from "./GithubUsersContextProvider";
 import UserCard from "./UserCard";
 
+//list component for the github users cards
 export default function UsersCardsList() {
   const { users, isLoading, isEditMode, selectedUserIds, toggleSelection } =
     useGithubUsersContext();

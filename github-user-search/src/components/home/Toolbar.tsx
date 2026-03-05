@@ -1,6 +1,7 @@
 import { memo } from "react";
 import { useGithubUsersContext } from "./GithubUsersContextProvider";
 
+//toolbar component for the github users
 export const Toolbar = memo(function Toolbar() {
   const {
     isEditMode,

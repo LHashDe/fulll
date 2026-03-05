@@ -3,6 +3,7 @@ import { Toolbar } from "./Toolbar";
 import { useGithubUsersContext } from "./GithubUsersContextProvider";
 import UsersCardsList from "./UsersCardsList";
 
+//layout component for the github users context
 export default function GithubUsersContextLayout() {
   const { isLoading, error } = useGithubUsersContext();
   return (

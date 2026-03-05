@@ -8,6 +8,7 @@ type UserCardProps = {
   onToggleSelection: (internalId: string) => void;
 };
 
+//user card component for the github users
 const UserCard = memo(function UserCard({
   user,
   isSelected,

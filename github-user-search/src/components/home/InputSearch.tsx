@@ -1,6 +1,7 @@
 import { memo } from "react";
 import { useGithubUsersContext } from "./GithubUsersContextProvider";
 
+//input component for the github users search
 const InputSearch = memo(function InputSearch() {
   const { searchValue, handleSearchChange } = useGithubUsersContext();
 
